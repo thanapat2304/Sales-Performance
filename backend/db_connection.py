@@ -5,11 +5,11 @@ import pyodbc
 def connect_aep_portal():
     try:
         connection = mysql.connector.connect(
-            host='192.168.10.4',
-            user='root',
-            password='americ1234',
-            database='aep_portal',
-            charset='utf8'
+            host='#',
+            user='#',
+            password='#',
+            database='#',
+            charset='#'
         )
         if connection.is_connected():
             return connection
@@ -33,13 +33,12 @@ def execute_query_portal(query, params=None):
     return result
     
 def connect_aep_DB():
-    server = '192.168.10.8'
-    database = 'AEP_DB'
-    username = 'aep_user99'
-    password = 'aep99?8#9#'
+    server = '#'
+    database = '#'
+    username = '#'
+    password = '#'
     
     try:
-        # เชื่อมต่อกับ SQL Server โดยใช้ pyodbc
         conn = pyodbc.connect(
             f'DRIVER={{ODBC Driver 17 for SQL Server}};'
             f'SERVER={server};'
