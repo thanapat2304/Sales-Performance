@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet"> <!-- ตัวหนังสือ -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> <!-- ICON GOOGLE -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <style>
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #697a8d;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        text-decoration: none;
+      }     
+      .icon-btn:hover {
+        color: rgb(128, 25, 25);
+        transform: scale(1.05);
+      }
+
+      th, td {
+        font-size: 13px;
+        font-family: 'Anuphan', sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="layout-wrapper layout-content-navbar layout-without-menu">
+      <div class="layout-container">
+        <div class="layout-page">
+
+          <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <small class="text-muted">Date Time : {{current_time}}</small>
+                </div>
+              </div>
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a style="cursor: default;" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <div class="avatar avatar-online" style="cursor: default;">
+                          <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                        </div>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive text-nowrap">
+                        <div id="page1" class="purchase-table">
+                            <table id="table1" class="purchase-table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; vertical-align: middle;">VIEW</th>
+                                        <th style="text-align: center; vertical-align: middle;">DOCDATE</th>
+                                        <th style="text-align: center; vertical-align: middle;">DOCNO</th>
+                                        <th style="text-align: center; vertical-align: middle;">CUSTYPE</th>
+                                        <th style="text-align: center; vertical-align: middle;">CUSTNO</th>
+                                        <th style="text-align: center; vertical-align: middle;">CUSTNAME</th>
+                                        <th style="text-align: center; vertical-align: middle;">SALESMAN</th>
+                                        <th style="text-align: center; vertical-align: middle;">Total Bill</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in results %}
+                                    <tr>
+                                        <td class="text-center">
+                                          <span onclick="window.open('/bill_welcome/{{ result.DOCNO }}', '_blank');" class="icon-btn">
+                                            <span style="cursor: pointer;" class="material-symbols-outlined">visibility</span>
+                                          </span>
+                                        </td>
+                                        <td>{{ result.DOCDATE }}</td>
+                                        <td>{{ result.DOCNO }}</td>
+                                        <td>{{ result.CUSTYPE }}</td>
+                                        <td>{{ result.CUSTNO }}</td>
+                                        <td>{{ result.CUSTNAME }}</td>
+                                        <td>{{ result.SALESMAN }}</td>
+                                        <td>{{ result.total_bill }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> 
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="content-footer footer bg-footer-theme">
+                <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                  <div class="mb-2 mb-md-0">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    , Develop by Information Technology Department
+                    <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+                  </div>
+                </div>
+            </footer>
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+    <script>
+      function redirectToDetailPage(docno) {
+          window.open("/bill_welcome/" + docno, '_blank');
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_tracking.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_css.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+    <style>
+      .hidden {
+        display: none;
+      }
+
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #697a8d;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        text-decoration: none;
+      }     
+      .icon-btn:hover {
+        color: rgb(128, 25, 25);
+        transform: scale(1.05);
+      }
+
+      .content {
+        overflow-y: auto;
+      }
+
+      th, td {
+        font-size: 13px;
+        font-family: 'Anuphan', sans-serif;
+      }
+
+      @media print {
+        @page {
+          size: A4 landscape;
+          margin: -10mm;
+          margin-top: -13mm;
+        }
+
+        body * {
+          background-color: white !important;
+          color: black !important;
+        }   
+
+        #layout-navbar {
+          display: none;
+        }
+
+        #print_hide {
+          display: none;
+        }
+
+        #tabel_1, #tabel_2 {
+          width: 100%;
+          margin-top: -5mm;
+          page-break-inside: avoid;
+        }
+
+        #tabel_1 td {
+          font-size: 10px;
+          page-break-inside: avoid;
+        }
+
+        #tabel_2 td {
+          font-size: 9.5px;
+          page-break-inside: avoid;
+        }
+
+        .bx {
+          font-size: 10px;
+        }
+
+        #tabel_2 th {
+          font-size: 8px !important;
+          page-break-inside: avoid;
+        }
+
+        footer {
+          display: none;
+        }
+
+        #printButton {
+          display: none;
+        }
+        .card {
+          background-color: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+        }    
+
+        #layout-menu {
+          display: none;
+        }
+
+        body::after {
+          content: "Printed at: " attr(data-print-time);
+          position: fixed;
+          top: 15mm;
+          right: 15mm;
+          font-size: 12px;
+          font-weight: bold;
+          color: black;
+        }
+
+        #month-total {
+          display: block !important;
+          font-family: 'Anuphan', sans-serif;
+          text-align: left;
+          font-size: 9.5px;
+          page-break-inside: avoid;
+        }
+
+        #month-total .title {
+          font-weight: bold;
+          font-size: 13px;
+          margin-bottom: 0;
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+</head>
+
+  <body>    
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+              <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="app-brand-link">
+                <span class="app-brand-logo demo">
+                  <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="Logo" width="60">
+                </span>
+                <span class="app-brand-text demo menu-text fw-bolder ms-2">SALE-PERFORMANCE</span>
+              </a>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+              </a>
+            </div>
+    
+            <div class="menu-inner-shadow"></div>
+    
+            <ul class="menu-inner py-1">
+              <li class="menu-item">
+                <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Dashboard</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="{{ url_for('dashboard_user' if session['user_level'] == 3 else 'dashboard_power') }}" class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">frame_person</span>
+                  <div data-i18n="Analytics">Performance</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/overview_user' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">history</span>
+                  <div data-i18n="Analytics">Overview</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">filter_alt</span>
+                  <div data-i18n="Account Settings">Top Sale</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/top_cust' class="menu-link">
+                      <div data-i18n="Notifications">Top Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/top_mat' class="menu-link">
+                      <div data-i18n="Notifications">Top Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Main</span>
+              </li>
+              <li class="menu-item">
+                <a href='/cust_ms' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">groups</span>
+                  <div data-i18n="Analytics">Customer Master</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/stock' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">inventory_2</span>
+                  <div data-i18n="Analytics">Stock On-Hand</div>
+                </a>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Report</span>
+              </li>
+              <li class="menu-item active open">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">query_stats</span>
+                  <div data-i18n="Account Settings">Tracking</div>
+                </a>
+                <ul class="menu-sub">
+                  {% if session.get('user_level') == 1 %}
+                  <li class="menu-item active">
+                    <a href='/total_cust' class="menu-link">
+                      <div data-i18n="Account">Lost & New Customer</div>
+                    </a>
+                  </li>
+                  {% endif %}  
+                  <li class="menu-item">
+                    <a href='/lost' class="menu-link">
+                      <div data-i18n="Account">Lost Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackcus' class="menu-link">
+                      <div data-i18n="Notifications">Customer Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackinvo' class="menu-link">
+                      <div data-i18n="Notifications">Invoice Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/dailyinvo' class="menu-link">
+                      <div data-i18n="Notifications">Summary Report</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">table</span>
+                  <div data-i18n="Account Settings">Pivot</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_cus' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Customer</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_ty' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Custtype</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_it' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Item</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/histiry_pi' class="menu-link">
+                      <div data-i18n="Notifications">History Price</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_sa' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Salesman</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Compare</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">compare_arrows</span>
+                  <div data-i18n="Account Settings">Stock Compare</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/by_product' class="menu-link">
+                      <div data-i18n="Notifications">Compare By Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Export</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">communication</span>
+                  <div data-i18n="Account Settings">One-On-One</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/sales_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Sales</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/branch_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Branch</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">person_alert</span>
+                  <div data-i18n="Account Settings">Target&Actual</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/target_actual' class="menu-link">
+                      <div data-i18n="Notifications">Sales report</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/list_status' class="menu-link">
+                      <div data-i18n="Notifications">List Status</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% if '2' in user_moduals.split(',') %}
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">System</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">personal_places</span>
+                  <div data-i18n="Account Settings">Target</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/system' class="menu-link">
+                      <div data-i18n="Notifications">Sales Agent</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/add_target' class="menu-link">
+                      <div data-i18n="Notifications">Add Target</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+            </ul>
+        </aside>
+
+        <div class="layout-page">
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <small class="text-muted">Date Time : {{current_time}}</small>
+                </div>
+              </div>
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="/profile">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block" style="font-family: 'Anuphan', sans-serif;">{{user_name}}</span>
+                            <small class="text-muted">
+                              {% if user_level == 1 %}
+                                Admin
+                              {% elif user_level == 2 %}
+                                Power User
+                              {% elif user_level == 3 %}
+                                User
+                              {% else %}
+                                Unknown
+                              {% endif %}
+                            </small>                          
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/profile">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='/logout'>
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="card mb-4" id="print_hide">
+                <h5 class="card-header">Customer Activity Overview</h5>
+                <div class="card-body">
+                    <div class="row gx-3 gy-2 align-items-center">
+                        <form method="POST">
+                            <div class="row">
+                              <div class="col-md-3">
+                                <label class="form-label" for="customer">Year</label>
+                                <select name="year" id="year" class="form-select placement-dropdown">
+                                    {% for year in year %}
+                                        <option value="{{ year.id }}" {% if year.id == year_show %}selected{% endif %}>{{ year.AS_Name_year }}</option>
+                                    {% endfor %}
+                                </select>
+                              </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" for="showToastPlacement">&nbsp;</label>
+                                    <button type="submit" class="btn btn-primary d-block">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+              </div>
+
+              <div class="card mb-4">
+                <ul class="nav nav-tabs" role="tablist" id="print_hide">
+                  <li class="nav-item">
+                    <button
+                      type="button"
+                      class="nav-link active"
+                      role="tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#navs-top-home"
+                      aria-controls="navs-top-home"
+                      aria-selected="true"
+                      onclick="toggleTable('page1')"
+                    >
+                    Total
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button
+                      type="button"
+                      class="nav-link"
+                      role="tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#navs-top-profile"
+                      aria-controls="navs-top-profile"
+                      aria-selected="false"
+                      onclick="toggleTable('page2')"
+                    >
+                    New & Lost
+                    </button>
+                  </li>
+                </ul>
+                <div class="card-body">
+                  <div class="row g-0">
+                    {% if request.method == 'POST' %}
+                    {% if results %}
+                      <div id="page1" class="content">
+                        <h5 class="card-header" style="text-align: center;">Customer Compare {{selected_year}}</h5>
+                        <table class="table" id="tabel_1">
+                          <thead>
+                              <tr>
+                                  <th style="text-align: center;">Month</th>
+                                  <th style="text-align: center;">{{three_year}}</th>
+                                  <th style="text-align: center;">growth</th>
+                                  <th style="text-align: center;">{{two_year}}</th>
+                                  <th style="text-align: center;">growth</th>
+                                  <th style="text-align: center;">{{selected_year}}</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% for row in results %}
+                                <tr {% if loop.index == loop.length %}style="font-weight: bold;"{% endif %}>
+                                    <td style="text-align: center;">{{ row[0] }}</td>
+                                    <td style="text-align: center;">{{ "{:,}".format(row[1]) }}</td>
+                                    <td style="text-align: center;">
+                                      {% if row[2] > 0 %}
+                                          <span class="text-success">
+                                              <i class="bx bx-up-arrow-alt"></i>+ {{ row[2] }}%
+                                          </span>
+                                      {% elif row[2] < 0 %}
+                                          <span class="text-danger">
+                                              <i class="bx bx-down-arrow-alt"></i> {{ row[2] }}%
+                                          </span>
+                                      {% else %}
+                                          {{ row[2] }}%
+                                      {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">{{ "{:,}".format(row[3]) }}</td>
+                                    <td style="text-align: center;">
+                                      {% if row[4] > 0 %}
+                                          <span class="text-success">
+                                              <i class="bx bx-up-arrow-alt"></i>+ {{ row[4] }}%
+                                          </span>
+                                      {% elif row[4] < 0 %}
+                                          <span class="text-danger">
+                                              <i class="bx bx-down-arrow-alt"></i> {{ row[4] }}%
+                                          </span>
+                                      {% else %}
+                                          {{ row[4] }}%
+                                      {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">{{ "{:,}".format(row[5]) }}</td>
+                                </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table> 
+                        <br>
+                        <div class="mb-3">
+                          <button id="printButton" class="btn btn-primary" onclick="setPrintTime()"> Print</button>
+                        </div>   
+                        
+                        <div id="month-total" style="display: none;">
+                          <div class="title">Note :</div>
+                          <span>- MONTH : แสดงรายชื่อเดือน</span>
+                          <br>
+                          <span>- YEAR : แสดงจำนวนรวมลูกค้าที่ซื้อในแต่ละเดือน เปรียบเทียบข้อมูลย้อนหลัง 2 ปี</span>
+                          <br>
+                          <span>- GROWTH : เปรียบเทียบยอดการเติบโตเป็นเปอร์เซ็นต์ (%) ในเดือนเดียวกันของปีก่อน</span>
+                        </div>                        
+                      </div>
+                      <div id="page2" class="content hidden">
+                        <h5 class="card-header" style="text-align: center;">Customer Activity Overview {{selected_year}}</h5>
+                        <table class="table" id="tabel_2">
+                          <thead>
+                              <tr>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Month</th>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Total</th>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Net Change</th>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">New Customer</th>
+                                  <th colspan="3" style="text-align: center;">Stop Buying</th>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Net Cust</th>
+                                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Lost</th>
+                              </tr>
+                              <tr>
+                                  <th style="text-align: center;">1Month</th>
+                                  <th style="text-align: center;">2Month</th>
+                                  <th style="text-align: center;">3Month</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% for item in newlost %}
+                                <tr>
+                                    <td style="text-align: center;">
+                                      {% if 1 <= item['month'] <= 12 %}
+                                        {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][item['month'] - 1] }}
+                                      {% else %}
+                                        Invalid Month
+                                      {% endif %}
+                                    </td>                                 
+                                    <td style="text-align: center;">{{ "{:,}" .format(item['total']) }} <br> ( ฿ {{ "{:,}" .format(item['total_total']) }})</td>
+                                    {% if item['total'] == 0 %}
+                                      <td style="text-align: center;">-</td>
+                                      <td style="text-align: center;">0</td>
+                                      <td style="text-align: center;">0</td>
+                                      <td style="text-align: center;">0</td>
+                                      <td style="text-align: center;">0</td>
+                                      <td style="text-align: center;">0</td>
+                                      <td style="text-align: center;">0</td>
+                                    {% else %}
+                                      <td style="text-align: center;">
+                                        {% if item['net_change'] > 0 %}
+                                          <span class="text-success">
+                                              <i class="bx bx-up-arrow-alt text-success"></i> + {{ "{:,}" .format(item['net_change']) }}
+                                          </span>
+                                        {% elif item['net_change'] < 0 %}
+                                          <span class="text-danger">
+                                              <i class="bx bx-down-arrow-alt text-danger"></i> {{ "{:,}" .format(item['net_change']) }}
+                                          </span>
+                                        {% else %}
+                                          {{ item['net_change'] }}
+                                        {% endif %}
+                                      </td>
+                                      <td style="text-align: center;">
+                                        <a href="{{ url_for('tracking.total_new', year=selected_year, month=item['month']) }}" target="_blank" style="color: inherit; text-decoration: none;">
+                                          + {{ "{:,}".format(item['new']) }} <br> ( ฿ {{ "{:,}" .format(item['new_sales']) }})
+                                        </a>
+                                      </td>
+                                      <td style="text-align: center;">
+                                        <a href="{{ url_for('tracking.total_lost1', year=selected_year, month=item['month']) }}" target="_blank" style="color: inherit; text-decoration: none;">
+                                          - {{ "{:,}".format(item['lost_one']) }} <br> ( ฿ {{ "{:,}" .format(item['lost_one_sales']) }})
+                                        </a>
+                                      </td>
+                                      <td style="text-align: center;">
+                                        <a href="{{ url_for('tracking.total_lost2', year=selected_year, month=item['month']) }}" target="_blank" style="color: inherit; text-decoration: none;">
+                                          - {{ "{:,}".format(item['lost_two']) }} <br> ( ฿ {{ "{:,}" .format(item['lost_two_sales']) }})
+                                        </a>
+                                      </td>
+                                      <td style="text-align: center;">
+                                        <a href="{{ url_for('tracking.total_lost3', year=selected_year, month=item['month']) }}" target="_blank" style="color: inherit; text-decoration: none;">
+                                          - {{ "{:,}".format(item['lost_three']) }} <br> ( ฿ {{ "{:,}" .format(item['lost_three_sales']) }})
+                                        </a>
+                                      </td>
+                                      <td style="text-align: center;">
+                                        {% if item['net_cust'] > 0 %}
+                                          <span class="text-success">
+                                              <i class="bx bx-up-arrow-alt text-success"></i> + {{ "{:,}" .format(item['net_cust']) }}
+                                          </span>
+                                          <br> 
+                                          {% if item['net_cust_total'] > 0 %}
+                                              ( ฿ +{{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% else %}
+                                              ( ฿ {{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% endif %}
+                                        {% elif item['net_cust'] < 0 %}
+                                          <span class="text-danger">
+                                              <i class="bx bx-down-arrow-alt text-danger"></i> {{ "{:,}" .format(item['net_cust']) }}
+                                          </span>
+                                          <br>
+                                          {% if item['net_cust_total'] > 0 %}
+                                              ( ฿ +{{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% else %}
+                                              ( ฿ {{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% endif %}
+                                        {% else %}
+                                          {{ item['net_cust'] }}
+                                          <br>
+                                          {% if item['net_cust_total'] > 0 %}
+                                              ( ฿ +{{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% else %}
+                                              ( ฿ {{ "{:,}".format(item['net_cust_total']) }} )
+                                          {% endif %}
+                                        {% endif %}
+                                      </td>
+                                      <td style="text-align: center;">
+                                        <a href="{{ url_for('tracking.total_lost6', year=selected_year, month=item['month']) }}" target="_blank" style="color: inherit; text-decoration: none;">
+                                          - {{ "{:,}".format(item['lost_six']) }} <br> ( ฿ {{ "{:,}" .format(item['lost_six_sales']) }})
+                                        </a>
+                                      </td>
+                                    {% endif %}
+                                </tr>
+                              {% endfor %}
+                          </tbody>
+                        </table>  
+                        <br>
+                        <div class="mb-3">
+                          <button id="printButton" class="btn btn-primary" onclick="setPrintTime()"> Print</button>
+                        </div>   
+                        
+                        <!-- <div id="month-total" style="display: none;">
+                          <div class="title">Note :</div>
+                          <span>- TOTAL : แสดงจำนวนรวมลูกค้า</span>
+                          <br>
+                          <span>- NET CHANGE : แสดงจำนวนลูกค้าที่เพิ่มขึ้น ( + New) หรือหายไป ( - Lost) ในเดือนปัจจุบัน</span>
+                          <br>
+                          <span>- NEW CUSTOMER : แสดงจำนวนรวมลูกค้าใหม่ ( + New) ที่ไม่เคยมีประวัติเลย หรือ หยุดซื้อมากกว่า 6 เดือนแล้วกลับมาซื้อ</span>
+                          <br>
+                          <span>- STOP BUYING 1 MONTH : แสดงจำนวนรวมลูกค้าที่เคยซื้อใน 2 เดือนก่อน แต่ไม่มียอดใน 1 เดือนก่อนหน้า และเดือนปัจจุบัน</span>
+                          <br>
+                          <span>- STOP BUYING 2 MONTH : แสดงจำนวนรวมลูกค้าที่เคยซื้อใน 3 เดือนก่อน แต่ไม่มียอดใน 2 เดือนก่อนหน้า และเดือนปัจจุบัน</span>
+                          <br>
+                          <span>- STOP BUYING 3 MONTH : แสดงจำนวนรวมลูกค้าที่เคยซื้อใน 4 เดือนก่อน แต่ไม่มียอดใน 3 เดือนก่อนหน้า และเดือนปัจจุบัน</span>
+                          <br>
+                          <span>- Net Cust : แสดงจำนวนผลต่างของลูกค้าและยอดขายของลูกค้าใหม่ เทียบลูกค้าที่หยุดซื้อมาแล้ว 6 เดือน</span>
+                          <br>
+                          <span>- Lost : แสดงจำนวนรวมลูกค้าที่เคยซื้อใน 7 เดือนก่อน แต่ไม่มียอดใน 6 เดือนก่อนหน้า และเดือนปัจจุบัน</span>
+                        </div> -->
+                      </div>
+                    {% else %}
+                    <h2 class="header-subtitle" style="color: red;">
+                        <span>
+                            *** ไม่มีลูกค้า ***
+                        </span>
+                    </h2>
+                {% endif %}
+                {% else %}
+                <div class="header-subtitle">โปรดเลือกช่วงเวลา</div>
+                {% endif %}                       
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , Develop by Information Technology Department
+                  <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+                </div>
+              </div>
+            </footer>
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/total_cust.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#year').select2({
+                placeholder: "-- เลือก --",
+                width: '100%'
+            });
+        });
+    </script> 
+    <script>
+      function printPage() {
+        window.print();
+      }
+    </script> 
+    <script>
+      function setPrintTime() {
+        const currentTime = new Date().toLocaleString();
+        document.body.setAttribute('data-print-time', currentTime);
+        window.print();
+      }      
+    </script>
+  </body>
+</html>

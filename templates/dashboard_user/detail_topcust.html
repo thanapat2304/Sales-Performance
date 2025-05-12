@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet"> <!-- ตัวหนังสือ -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> <!-- ICON GOOGLE -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+  </head>
+
+  <body>
+    <div class="layout-wrapper layout-content-navbar layout-without-menu">
+      <div class="layout-container">
+        <div class="layout-page">
+
+          <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <small class="text-muted">Date Time : {{current_time}}</small>
+                </div>
+              </div>
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a style="cursor: default;" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <div class="avatar avatar-online" style="cursor: default;">
+                          <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                        </div>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="card">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <button
+                        type="button"
+                        class="nav-link active"
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#navs-top-home"
+                        aria-controls="navs-top-home"
+                        aria-selected="true"
+                        onclick="toggleTable('page1')"
+                      >
+                      New item
+                      </button>
+                    </li>
+                    <li class="nav-item">
+                      <button
+                        type="button"
+                        class="nav-link"
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#navs-top-profile"
+                        aria-controls="navs-top-profile"
+                        aria-selected="false"
+                        onclick="toggleTable('page2')"
+                      >
+                      Lost Item
+                      </button>
+                    </li>
+                  </ul>
+                    <h5 class="card-header" style="font-family: 'Anuphan', sans-serif;">{{custno}} | {{custname}}</h5>
+                    <div class="card-body">
+                      <div class="table-responsive text-nowrap">
+                        <div id="page1" class="purchase-table">
+                          <table id="table1" class="purchase-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; vertical-align: middle;">No</th>
+                                    <th style="text-align: center; vertical-align: middle;">MATNO</th>
+                                    <th style="text-align: center; vertical-align: middle;">MATNAME</th>
+                                    <th style="text-align: center; vertical-align: middle;">Last Purchase Date</th>
+                                    <th style="text-align: center; vertical-align: middle;">Last Purchase Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in purchase_data1 %}
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">{{ loop.index }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[0] }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[1] }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[2].strftime('%d/%m/%Y') }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ "{:,}".format(row[3]) if row[3] != 0 else '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div id="page2" class="purchase-table hidden">
+                          <table id="table2">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; vertical-align: middle;">No</th>
+                                    <th style="text-align: center; vertical-align: middle;">MATNO</th>
+                                    <th style="text-align: center; vertical-align: middle;">MATNAME</th>
+                                    <th style="text-align: center; vertical-align: middle;">Last Purchase Date</th>
+                                    <th style="text-align: center; vertical-align: middle;">Last Purchase Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in purchase_data2 %}
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">{{ loop.index }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[0] }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[1] }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ row[2].strftime('%d/%m/%Y') }}</td>
+                                    <td style="text-align: center; vertical-align: middle;">{{ "{:,}".format(row[3]) if row[3] != 0 else '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>  
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="content-footer footer bg-footer-theme">
+                <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                  <div class="mb-2 mb-md-0">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    , Develop by Information Technology Department
+                    <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+                  </div>
+                </div>
+            </footer>
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+th, td {
+    padding: 6px 15px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #dbdbdb;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.content table tbody tr:hover {
+    background-color: rgba(196, 210, 226, 0.5);
+}
+  
+th {
+    background-color: #A0BEE2;
+    color: #435E7A;
+}
+  
+td a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 18px;
+    color: #fff;
+    background-color: #004b96;
+    border-radius: 50%;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.content {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 380px;
+}
+
+.content1 {
+    overflow-y: auto;
+}
+
+.content1 table tbody tr:hover {
+    background-color: rgba(196, 210, 226, 0.5);
+}
+
+.hidden {
+    display: none;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1.25rem;
+    color: #8e9baa;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.nav-link.active {
+    color: #A0BEE2;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #A0BEE2;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.nav-link:not(.active)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 3px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}

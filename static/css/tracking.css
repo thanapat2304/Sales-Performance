@@ -1,0 +1,151 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+th, td {
+    padding: 6px 15px;
+    text-align: center;
+    border-bottom: 1px solid #dbdbdb;
+    font-size: 13px;
+    white-space: nowrap;
+    font-family: 'Anuphan', sans-serif;
+}
+
+.content table tbody tr:hover {
+    background-color: rgba(196, 210, 226, 0.5);
+}
+  
+th {
+    background-color: #A0BEE2;
+    color: #435E7A;
+    text-align: center;
+}
+
+td {
+    cursor: default;
+    border-left: 1px solid #dbdbdb;
+    border-right: 1px solid #dbdbdb;
+}
+
+td a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 18px;
+    color: #fff;
+    background-color: #004b96;
+    border-radius: 50%;
+    padding: 10px;
+    display: inline-block;
+}
+
+.content {
+    overflow-y: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1.25rem;
+    color: #8e9baa;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.nav-link.active {
+    color: #A0BEE2;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #A0BEE2;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.nav-link:not(.active)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 3px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.highlight {
+    background-color: #d4edda;
+    color: #155724;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .growthpositive {
+    background-color: #d4edda;
+    color: #155724;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .growthnegative {
+    background-color: #f8d7da;
+    color: #721c24;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .growthneutral {
+    background-color: #f8f9fa;
+    color: #155724;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+    
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+}
+
+.modal-body {
+  flex-grow: 1;
+  width: 100%;
+  overflow: auto;
+}
+  
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+    
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

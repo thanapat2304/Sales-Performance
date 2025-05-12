@@ -1,0 +1,24 @@
+.asset-details {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.asset-details p {
+    margin: 5px 0;
+}
+
+.asset-details strong {
+    font-weight: bold;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ */
+    gap: 20px;
+  }

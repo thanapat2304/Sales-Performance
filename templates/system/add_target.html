@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/apex-charts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_tracking.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet"> <!-- ตัวหนังสือ -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> <!-- ICON GOOGLE -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"> <!-- Dropdown -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Dropdown -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> <!-- Dropdown -->
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <style>
+      .content {
+        overflow-y: auto;
+      }
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #697a8d;
+        font-size: 20px;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        text-decoration: none;
+      }     
+      .icon-btn:hover {
+        color: rgb(128, 25, 25);
+        transform: scale(1.05);
+      }
+
+      .table {
+        user-select: none;
+      }
+
+      @media (max-width: 768px) {
+        th, td {
+          font-size: 11px;
+          padding: 6px;
+        }
+      }
+
+      th, td {
+        font-size: 13px;
+        font-family: 'Anuphan', sans-serif;
+        white-space: nowrap;
+      }
+    </style>
+</head>
+
+<body>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+              <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="Logo" width="60">
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">SALE-PERFORMANCE</span>
+          </a>
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+          </a>
+        </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+          <li class="menu-item">
+            <a href='/welcome' class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-circle"></i>
+              <div data-i18n="Analytics">Dashboard</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ url_for('dashboard_user' if session['user_level'] == 3 else 'dashboard_power') }}" class="menu-link">
+              <span class="material-symbols-outlined menu-icon">frame_person</span>
+              <div data-i18n="Analytics">Performance</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href='/overview_user' class="menu-link">
+              <span class="material-symbols-outlined menu-icon">history</span>
+              <div data-i18n="Analytics">Overview</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">filter_alt</span>
+              <div data-i18n="Account Settings">Top Sale</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/top_cust' class="menu-link">
+                  <div data-i18n="Notifications">Top Customer</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/top_mat' class="menu-link">
+                  <div data-i18n="Notifications">Top Product</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Main</span>
+          </li>
+          <li class="menu-item">
+            <a href='/cust_ms' class="menu-link">
+              <span class="material-symbols-outlined menu-icon">groups</span>
+              <div data-i18n="Analytics">Customer Master</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href='/stock' class="menu-link">
+              <span class="material-symbols-outlined menu-icon">inventory_2</span>
+              <div data-i18n="Analytics">Stock On-Hand</div>
+            </a>
+          </li>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Report</span>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">query_stats</span>
+              <div data-i18n="Account Settings">Tracking</div>
+            </a>
+            <ul class="menu-sub">
+              {% if session.get('user_level') == 1 %}
+              <li class="menu-item">
+                <a href='/total_cust' class="menu-link">
+                  <div data-i18n="Account">Lost & New Customer</div>
+                </a>
+              </li>
+              {% endif %} 
+              <li class="menu-item">
+                <a href='/lost' class="menu-link">
+                  <div data-i18n="Account">Lost Customer</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/trackcus' class="menu-link">
+                  <div data-i18n="Notifications">Customer Tracking</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/trackinvo' class="menu-link">
+                  <div data-i18n="Notifications">Invoice Tracking</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/dailyinvo' class="menu-link">
+                  <div data-i18n="Notifications">Summary Report</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">table</span>
+              <div data-i18n="Account Settings">Pivot</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/summary_cus' class="menu-link">
+                  <div data-i18n="Notifications">Sum Of Customer</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/summary_ty' class="menu-link">
+                  <div data-i18n="Notifications">Sum Of Custtype</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/summary_it' class="menu-link">
+                  <div data-i18n="Notifications">Sum Of Item</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/histiry_pi' class="menu-link">
+                  <div data-i18n="Notifications">History Price</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/summary_sa' class="menu-link">
+                  <div data-i18n="Notifications">Sum Of Salesman</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Compare</span>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">compare_arrows</span>
+              <div data-i18n="Account Settings">Stock Compare</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/by_product' class="menu-link">
+                  <div data-i18n="Notifications">Compare By Product</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Export</span>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">communication</span>
+              <div data-i18n="Account Settings">One-On-One</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/sales_oneonone' class="menu-link">
+                  <div data-i18n="Notifications">Sales</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/branch_oneonone' class="menu-link">
+                  <div data-i18n="Notifications">Branch</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">person_alert</span>
+              <div data-i18n="Account Settings">Target&Actual</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/target_actual' class="menu-link">
+                  <div data-i18n="Notifications">Sales report</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/list_status' class="menu-link">
+                  <div data-i18n="Notifications">List Status</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if '2' in user_moduals.split(',') %}
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+          </li>
+          <li class="menu-item active open">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <span class="material-symbols-outlined menu-icon">personal_places</span>
+              <div data-i18n="Account Settings">Target</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href='/system' class="menu-link">
+                  <div data-i18n="Notifications">Sales Agent</div>
+                </a>
+              </li>
+            </ul>
+            <ul class="menu-sub">
+              <li class="menu-item active">
+                <a href='/add_target' class="menu-link">
+                  <div data-i18n="Notifications">Add Target</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+      </aside>
+
+      <div class="layout-page">
+        <nav
+          class="layout-navbar container-fluid navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar"
+        >
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <div class="navbar-nav align-items-center">
+              <div class="nav-item d-flex align-items-center">
+                <small class="text-muted">Date Time : {{current_time}}</small>
+              </div>
+            </div>
+
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+              <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <div class="avatar avatar-online">
+                    <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                  </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="/profile">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                          <div class="avatar avatar-online">
+                            <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <span class="fw-semibold d-block" style="font-family: 'Anuphan', sans-serif;">{{user_name}}</span>
+                          <small class="text-muted">
+                            {% if user_level == 1 %}
+                              Admin
+                            {% elif user_level == 2 %}
+                              Power User
+                            {% elif user_level == 3 %}
+                              User
+                            {% else %}
+                              Unknown
+                            {% endif %}
+                          </small>                          
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href='/profile'>
+                      <i class="bx bx-user me-2"></i>
+                      <span class="align-middle">My Profile</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="bx bx-cog me-2"></i>
+                      <span class="align-middle">Settings</span>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href='/logout'>
+                      <i class="bx bx-power-off me-2"></i>
+                      <span class="align-middle">Log Out</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="content-wrapper">
+          <div class="container-fluid flex-grow-1 container-p-y">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6 row-gap-4">
+                <div class="d-flex flex-column justify-content-center">
+                  <h4 class="mb-1">Add Target</h4>
+                  <p class="mb-0">Add new or edit existing data</p>
+                </div>
+            </div>
+            <br>
+            <form>
+              <div class="row">
+                <div class="col-12 col-lg-8">
+                  <div class="card mb-6">
+                    <div class="card-header">
+                      <h5 class="card-tile mb-0">Sales Target</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="row mb-6">
+                        <div class="col">
+                          <label class="form-label" for="January">1 | January</label> 
+                          <input type="text" class="form-control" id="January" name="January" aria-label="Product barcode" 
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="February">2 | February</label> 
+                          <input type="text" class="form-control" id="February" name="February" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                      <div class="row mb-6 mt-2">
+                        <div class="col">
+                          <label class="form-label" for="March">3 | March</label> 
+                          <input type="text" class="form-control" id="March" name="March" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="April">4 | April</label> 
+                          <input type="text" class="form-control" id="April" name="April" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                      <div class="row mb-6 mt-2">
+                        <div class="col">
+                          <label class="form-label" for="May">5 | May</label> 
+                          <input type="text" class="form-control" id="May" name="May" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="June">6 | June</label> 
+                          <input type="text" class="form-control" id="June" name="June" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                      <div class="row mb-6 mt-2">
+                        <div class="col">
+                          <label class="form-label" for="July">7 | July</label> 
+                          <input type="text" class="form-control" id="July" name="July" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="August">8 | August</label> 
+                          <input type="text" class="form-control" id="August" name="August" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                      <div class="row mb-6 mt-2">
+                        <div class="col">
+                          <label class="form-label" for="September">9 | September</label> 
+                          <input type="text" class="form-control" id="September" name="September" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="October">10 | October</label> 
+                          <input type="text" class="form-control" id="October" name="October" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                      <div class="row mb-6 mt-2">
+                        <div class="col">
+                          <label class="form-label" for="November">11 | November</label> 
+                          <input type="text" class="form-control" id="November" name="November" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                        <div class="col">
+                          <label class="form-label" for="December">12 | December</label> 
+                          <input type="text" class="form-control" id="December" name="December" aria-label="Product barcode"
+                          oninput="formatNumber(this), AMTNumber(event)" onblur="removeCommasBeforeSubmit(this)">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                  <div class="card mb-6">
+                    <div class="card-header">
+                      <h5 class="card-title mb-0">Seller Information</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-6">
+                        <label class="form-label" for="salesman">Seller</label>
+                        <select name="salesman" id="salesman" class="form-select color-dropdown" required>
+                          <option value="">-- เลือกผู้ขาย --</option>
+                          {% for i in range(salesman2|length) %}
+                            <option value="{{ salesman2[i] }}" {% if salesman2[i] == selected_sm %}selected{% endif %}>
+                              {{ salesman2[i] }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="mb-6">
+                        <label class="form-label" for="typesale">Seller Type</label>
+                        <select name="typesale" id="typesale" class="form-select color-dropdown" required>
+                            <option value="">-- เลือกประเภท --</option>
+                            {% for i in range(type_sale|length) %}
+                                <option value="{{ type_sale[i] }}" {% if type_sale[i] == show_top %}selected{% endif %}>
+                                  {{ type_sale[i] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="mb-6">
+                        <label class="form-label" for="year">Year</label>
+                        <select name="year" id="year" class="form-select placement-dropdown">
+                            <option value="">-- เลือกปี --</option>
+                            {% for year in year %}
+                                <option value="{{ year.id }}" {% if year.id == year_customer %}selected{% endif %}>{{ year.AS_Name_year }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="d-flex justify-content-end border-top pt-2 mt-3">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <footer class="content-footer footer bg-footer-theme">
+            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+              <div class="mb-2 mb-md-0">
+                ©
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                , Develop by Information Technology Department
+                <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+              </div>
+            </div>
+          </footer>
+          <div class="content-backdrop fade"></div>
+        </div>
+      </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/keyboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+  <script>
+    $('#salesman, #typesale, #year').on('change', function() {
+      var sales = $('#salesman').val();
+      var typesale = $('#typesale').val();
+      var year = $('#year').val(); 
+  
+      if (sales) {
+          fetch(`/get_lates_target/${sales}?typesale=${typesale}&year=${year}`)
+              .then(response => response.json())
+              .then(data => {
+                  var januaryValue = data.RPS_Jan || 0;
+                  var februaryValue = data.RPS_Feb || 0;
+                  var marchValue = data.RPS_Mar || 0;
+                  var aprilValue = data.RPS_Apr || 0;
+                  var mayValue = data.RPS_May || 0;
+                  var juneValue = data.RPS_Jun || 0;
+                  var julyValue = data.RPS_Jul || 0;
+                  var augustValue = data.RPS_Aug || 0;
+                  var septemberValue = data.RPS_Sep || 0;
+                  var octoberValue = data.RPS_Oct || 0;
+                  var novemberValue = data.RPS_Nov || 0;
+                  var decemberValue = data.RPS_Dec || 0;
+  
+                  document.getElementById('January').value = januaryValue.toLocaleString() || '0';
+                  document.getElementById('February').value = februaryValue.toLocaleString() || '0';
+                  document.getElementById('March').value = marchValue.toLocaleString() || '0';
+                  document.getElementById('April').value = aprilValue.toLocaleString() || '0';
+                  document.getElementById('May').value = mayValue.toLocaleString() || '0';
+                  document.getElementById('June').value = juneValue.toLocaleString() || '0';
+                  document.getElementById('July').value = julyValue.toLocaleString() || '0';
+                  document.getElementById('August').value = augustValue.toLocaleString() || '0';
+                  document.getElementById('September').value = septemberValue.toLocaleString() || '0';
+                  document.getElementById('October').value = octoberValue.toLocaleString() || '0';
+                  document.getElementById('November').value = novemberValue.toLocaleString() || '0';
+                  document.getElementById('December').value = decemberValue.toLocaleString() || '0';
+              })
+              .catch(error => {
+                  console.error('Error fetching data:', error);
+                  document.getElementById('January').value = '0';
+                  document.getElementById('February').value = '0';
+                  document.getElementById('March').value = '0';
+                  document.getElementById('April').value = '0';
+                  document.getElementById('May').value = '0';
+                  document.getElementById('June').value = '0';
+                  document.getElementById('July').value = '0';
+                  document.getElementById('August').value = '0';
+                  document.getElementById('September').value = '0';
+                  document.getElementById('October').value = '0';
+                  document.getElementById('November').value = '0';
+                  document.getElementById('December').value = '0';
+              });
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+        $('#salesman').select2({
+            placeholder: "-- เลือก --",
+            width: '100%',
+            allowClear: true
+        });
+        $('#typesale').select2({
+          placeholder: "-- เลือก --",
+          width: '100%',
+          allowClear: true
+        });
+        $('#year').select2({
+          placeholder: "-- เลือก --",
+          width: '100%',
+          allowClear: true
+        });
+    });
+  </script>
+</body>
+</html>

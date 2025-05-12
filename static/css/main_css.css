@@ -1,0 +1,37 @@
+.hidden {
+    display: none;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1.25rem;
+    color: #8e9baa;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.nav-link.active {
+    color: #A0BEE2;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #A0BEE2;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.nav-link:not(.active)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 3px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}

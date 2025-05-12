@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap');
+
+.select2-container--default .select2-selection--single {
+    height: 35px;
+    min-height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    align-items: center;
+    font-family: 'Anuphan', sans-serif;
+}
+
+.header-subtitle {
+    font-family: 'Anuphan', sans-serif;
+    text-align: center;
+    font-weight: normal;
+    font-size: 20px;
+    color: #34495e;
+    line-height: 1;
+    word-wrap: break-word;
+}

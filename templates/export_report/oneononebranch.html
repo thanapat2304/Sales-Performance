@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_tracking.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+</head>
+
+  <body>
+    <div id="myModal" class="modal">
+      <div class="modal-content content">
+        <div class="modal-body">
+          <span class="close">&times;</span>
+          <p>Matno: <span id="matno"></span></p>
+          <p>Month: <span id="month"></span></p>
+            <div id="modal-price"></div>
+            <div id="modal-uom"></div>
+            <div id="modal-last-purchase"></div>
+        </div>
+      </div>
+    </div>     
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+              <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="app-brand-link">
+                <span class="app-brand-logo demo">
+                  <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="Logo" width="60">
+                </span>
+                <span class="app-brand-text demo menu-text fw-bolder ms-2">SALE-PERFORMANCE</span>
+              </a>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+              </a>
+            </div>
+    
+            <div class="menu-inner-shadow"></div>
+    
+            <ul class="menu-inner py-1">
+              <li class="menu-item">
+                <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Dashboard</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="{{ url_for('dashboard_user' if session['user_level'] == 3 else 'dashboard_power') }}" class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">frame_person</span>
+                  <div data-i18n="Analytics">Performance</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/overview_user' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">history</span>
+                  <div data-i18n="Analytics">Overview</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">filter_alt</span>
+                  <div data-i18n="Account Settings">Top Sale</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/top_cust' class="menu-link">
+                      <div data-i18n="Notifications">Top Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/top_mat' class="menu-link">
+                      <div data-i18n="Notifications">Top Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Main</span>
+              </li>
+              <li class="menu-item">
+                <a href='/cust_ms' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">groups</span>
+                  <div data-i18n="Analytics">Customer Master</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/stock' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">inventory_2</span>
+                  <div data-i18n="Analytics">Stock On-Hand</div>
+                </a>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Report</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">query_stats</span>
+                  <div data-i18n="Account Settings">Tracking</div>
+                </a>
+                <ul class="menu-sub">
+                  {% if session.get('user_level') == 1 %}
+                  <li class="menu-item">
+                    <a href='/total_cust' class="menu-link">
+                      <div data-i18n="Account">Lost & New Customer</div>
+                    </a>
+                  </li>
+                  {% endif %} 
+                  <li class="menu-item">
+                    <a href='/lost' class="menu-link">
+                      <div data-i18n="Account">Lost Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackcus' class="menu-link">
+                      <div data-i18n="Notifications">Customer Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackinvo' class="menu-link">
+                      <div data-i18n="Notifications">Invoice Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/dailyinvo' class="menu-link">
+                      <div data-i18n="Notifications">Summary Report</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">table</span>
+                  <div data-i18n="Account Settings">Pivot</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_cus' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Customer</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_ty' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Custtype</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_it' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Item</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/histiry_pi' class="menu-link">
+                      <div data-i18n="Notifications">History Price</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_sa' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Salesman</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Compare</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">compare_arrows</span>
+                  <div data-i18n="Account Settings">Stock Compare</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/by_product' class="menu-link">
+                      <div data-i18n="Notifications">Compare By Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Export</span>
+              </li>
+              <li class="menu-item active open">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">communication</span>
+                  <div data-i18n="Account Settings">One-On-One</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/sales_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Sales</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item active">
+                    <a href='/branch_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Branch</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">person_alert</span>
+                  <div data-i18n="Account Settings">Target&Actual</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/target_actual' class="menu-link">
+                      <div data-i18n="Notifications">Sales report</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/list_status' class="menu-link">
+                      <div data-i18n="Notifications">List Status</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% if '2' in user_moduals.split(',') %}
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">System</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">personal_places</span>
+                  <div data-i18n="Account Settings">Target</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/system' class="menu-link">
+                      <div data-i18n="Notifications">Sales Agent</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/add_target' class="menu-link">
+                      <div data-i18n="Notifications">Add Target</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+            </ul>
+        </aside>
+
+        <div class="layout-page">
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <small class="text-muted">Date Time : {{current_time}}</small>
+                </div>
+              </div>
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="/profile">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block" style="font-family: 'Anuphan', sans-serif;">{{user_name}}</span>
+                            <small class="text-muted">
+                              {% if user_level == 1 %}
+                                Admin
+                              {% elif user_level == 2 %}
+                                Power User
+                              {% elif user_level == 3 %}
+                                User
+                              {% else %}
+                                Unknown
+                              {% endif %}
+                            </small>                          
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/profile">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='/logout'>
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+            <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="card mb-4">
+                  <h5 class="card-header">Report One-On-One Branch</h5>
+                    <div class="card-body pt-1">
+                        <form id="formAccountSettings" method="POST">
+                            <div class="row">
+                                <div class="mb-6 col-md-6 form-password-toggle form-control-validation fv-plugins-icon-container">
+                                  <label class="form-label" for="newPassword">Start Date</label>
+                                  <div class="input-group input-group-merge has-validation">
+                                    <input class="form-control" type="date" id="html5-date-input" name="start_date" readonly/>
+                                  </div>
+                                  <br>
+                                </div>
+                                <div class="mb-6 col-md-6 form-password-toggle form-control-validation fv-plugins-icon-container">
+                                  <label class="form-label" for="newPassword">End Date</label>
+                                  <div class="input-group input-group-merge has-validation">
+                                      <input class="form-control" type="date" id="date" name="end_date"/>
+                                  </div>
+                                  <br>
+                                </div>
+                            </div>
+                            <h6 class="text-body">Detail Report :</h6>
+                            <ul class="ps-4 mb-0" style="font-family: 'Anuphan', sans-serif;">
+                                <li class="mb-4">ข้อมูลยอดขายตามสาขา</li>
+                                <li class="mb-4">Report ที่ส่งทุกวันศุกร์</li>
+                                <li class="mb-4">เป็นข้อมูลเทียบย้อนหลัง 3ปี</li>
+                                <li>สามารถเลือกได้เฉพาะภายในตั้งแต่ต้นปีปัจจุบันถึง สิ้นปีปัจจุบันเท่านั้น</li>
+                            </ul>
+                            <br>
+                            <div class="mt-6">
+                                <button type="submit" class="btn btn-primary me-3">Export</button>
+                                <div class="spinner-border text-primary" role="status" id="spinner" style="display: none;">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , Develop by Information Technology Department
+                  <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+                </div>
+              </div>
+            </footer>
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+    <script>
+      window.onload = function() {
+          const dateInput = document.getElementById('html5-date-input');
+          const today = new Date();
+          const currentYear = today.getFullYear();
+          const startDate = new Date(Date.UTC(currentYear, 0, 1));
+          const formattedDate = startDate.toISOString().split('T')[0];
+          dateInput.value = formattedDate;
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+      });
+    </script>
+    <script>
+      document.getElementById('formAccountSettings').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        var saveButton = document.querySelector('.btn.btn-primary.me-3');
+        var spinner = document.getElementById('spinner');
+    
+        saveButton.style.display = 'none';
+        spinner.style.display = 'inline-block';
+    
+        var formData = new FormData(event.target);
+    
+        fetch('/branch_oneonone', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            }
+            throw new Error('Network response was not ok');
+        })
+        .then(blob => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'OneOnOne_Branch.xlsx';
+            link.click();
+    
+            spinner.style.display = 'none';
+            saveButton.style.display = 'inline-block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            spinner.style.display = 'none';
+            saveButton.style.display = 'inline-block';
+    
+            alert('There was an error submitting the form.');
+        });
+      });
+    </script>
+  </body>
+</html>

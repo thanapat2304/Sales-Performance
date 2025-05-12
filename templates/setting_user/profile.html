@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../static/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Sale-Performance</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/boxicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_tracking.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/config.js') }}"></script>
+    <style>
+      .js-data-basic-multiple {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .select2-container {
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+
+      .select2-container .select2-selection--multiple {
+        font-family: 'Anuphan', sans-serif;
+      }
+
+      .select2-container .select2-results__option {
+        font-family: 'Anuphan', sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+              <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="app-brand-link">
+                <span class="app-brand-logo demo">
+                  <img src="{{ url_for('static', filename='img/favicon.png') }}" alt="Logo" width="60">
+                </span>
+                <span class="app-brand-text demo menu-text fw-bolder ms-2">SALE-PERFORMANCE</span>
+              </a>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm align-middle"></i>
+              </a>
+            </div>
+    
+            <div class="menu-inner-shadow"></div>
+    
+            <ul class="menu-inner py-1">
+              <li class="menu-item">
+                <a href="{{ url_for('welcome' if session['user_level'] == 3 else 'welcome') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Dashboard</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="{{ url_for('dashboard_user' if session['user_level'] == 3 else 'dashboard_power') }}" class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">frame_person</span>
+                  <div data-i18n="Analytics">Performance</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/overview_user' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">history</span>
+                  <div data-i18n="Analytics">Overview</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">filter_alt</span>
+                  <div data-i18n="Account Settings">Top Sale</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/top_cust' class="menu-link">
+                      <div data-i18n="Notifications">Top Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/top_mat' class="menu-link">
+                      <div data-i18n="Notifications">Top Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Main</span>
+              </li>
+              <li class="menu-item">
+                <a href='/cust_ms' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">groups</span>
+                  <div data-i18n="Analytics">Customer Master</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href='/stock' class="menu-link">
+                  <span class="material-symbols-outlined menu-icon">inventory_2</span>
+                  <div data-i18n="Analytics">Stock On-Hand</div>
+                </a>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Report</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">query_stats</span>
+                  <div data-i18n="Account Settings">Tracking</div>
+                </a>
+                <ul class="menu-sub">
+                  {% if session.get('user_level') == 1 %}
+                  <li class="menu-item">
+                    <a href='/total_cust' class="menu-link">
+                      <div data-i18n="Account">Lost & New Customer</div>
+                    </a>
+                  </li>
+                  {% endif %} 
+                  <li class="menu-item">
+                    <a href='/lost' class="menu-link">
+                      <div data-i18n="Account">Lost Customer</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackcus' class="menu-link">
+                      <div data-i18n="Notifications">Customer Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/trackinvo' class="menu-link">
+                      <div data-i18n="Notifications">Invoice Tracking</div>
+                    </a>
+                  </li>
+                  <li class="menu-item">
+                    <a href='/dailyinvo' class="menu-link">
+                      <div data-i18n="Notifications">Summary Report</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">table</span>
+                  <div data-i18n="Account Settings">Pivot</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_cus' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Customer</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_ty' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Custtype</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_it' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Item</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/histiry_pi' class="menu-link">
+                      <div data-i18n="Notifications">History Price</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/summary_sa' class="menu-link">
+                      <div data-i18n="Notifications">Sum Of Salesman</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Compare</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">compare_arrows</span>
+                  <div data-i18n="Account Settings">Stock Compare</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/by_product' class="menu-link">
+                      <div data-i18n="Notifications">Compare By Product</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Export</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">communication</span>
+                  <div data-i18n="Account Settings">One-On-One</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/sales_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Sales</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/branch_oneonone' class="menu-link">
+                      <div data-i18n="Notifications">Branch</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">person_alert</span>
+                  <div data-i18n="Account Settings">Target&Actual</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/target_actual' class="menu-link">
+                      <div data-i18n="Notifications">Sales report</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/list_status' class="menu-link">
+                      <div data-i18n="Notifications">List Status</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% if '2' in user_moduals.split(',') %}
+              <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">System</span>
+              </li>
+              <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <span class="material-symbols-outlined menu-icon">personal_places</span>
+                  <div data-i18n="Account Settings">Target</div>
+                </a>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/system' class="menu-link">
+                      <div data-i18n="Notifications">Sales Agent</div>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="menu-sub">
+                  <li class="menu-item">
+                    <a href='/add_target' class="menu-link">
+                      <div data-i18n="Notifications">Add Target</div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+            </ul>
+        </aside>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <small class="text-muted">Date Time : {{current_time}}</small>
+                </div>
+              </div>
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="{{ photo_url }}" alt="Logo" class="w-px-40 h-auto rounded-circle">
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block" style="font-family: 'Anuphan', sans-serif;">{{user_name}}</span>
+                            <small class="text-muted">
+                              {% if user_level == 1 %}
+                                Admin
+                              {% elif user_level == 2 %}
+                                Power User
+                              {% elif user_level == 3 %}
+                                User
+                              {% else %}
+                                Unknown
+                              {% endif %}
+                            </small>                          
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href='/logout'>
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="content-wrapper">
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Profile Details</h5>
+                    <div class="card-body">
+                      <form id="uploadForm" action="#" method="POST" enctype="multipart/form-data">
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                          <img src="{{ photo_url }}" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar"/>
+                            <div class="button-wrapper">
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                    <span id="file-name" class="d-none d-sm-block">Upload new photo</span>
+                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                    <input
+                                        type="file"
+                                        id="upload"
+                                        class="account-file-input"
+                                        name="upload"
+                                        hidden
+                                        accept="image/png, image/jpeg"
+                                    />
+                                </label>
+                                <button type="button" id="saveBtn" class="btn btn-outline-secondary account-image-reset mb-4">
+                                    <i class="bx bx-reset d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Save</span>
+                                </button>
+                                <p class="text-muted mb-0">Allowed JPG or PNG. Max size of 800K</p>
+                            </div>
+                        </div>
+                      </form>                  
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body">
+                      <form id="formAccountSettings" method="POST">
+                        <div class="row">
+                          <div class="mb-3 col-md-6">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input style="font-family: 'Anuphan', sans-serif;" class="form-control" type="text" id="firstname" name="firstname" value="{{ one_name }}"/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input style="font-family: 'Anuphan', sans-serif;" class="form-control" type="text" name="lastname" id="lastname" value="{{ two_name }}"/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="nickname" class="form-label">Nick Name</label>
+                            <input style="font-family: 'Anuphan', sans-serif;" class="form-control" type="text" name="nickname" id="nickname" value="{{ three_name }}"/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input class="form-control" type="text" id="email" name="email" value="{{ rps_email }}"/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="organization" class="form-label">Department</label>
+                            <input type="text" class="form-control" id="organization" name="organization" value="{{ rps_dpm }}" readonly/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label class="form-label" for="phoneNumber">User Type</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="{{ rps_level }}" readonly/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="state" class="form-label">Status</label>
+                            <input class="form-control" type="text" id="state" name="state" value="{{ rps_status }}" readonly/>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                          <label class="form-label">Access Rights</label><br>
+                          <select id="modual" class="col-md-input js-data-basic-multiple" name="modual[]" multiple="multiple" disabled>
+                            {% for sm in modual2 %}
+                            <option value="{{ modual1[loop.index0] }}" {% if modual1[loop.index0]|string in rps_modual %}selected{% endif %}>
+                                {{ sm }}
+                            </option>
+                            {% endfor %}
+                          </select>
+                          </div>
+                          <label class="form-label">Employee ID</label>
+                          <select class="js-example-basic-multiple" name="states[]" multiple="multiple" {% if user_level != 1 %}disabled{% endif %}>
+                            {% for sm in salesman2 %}
+                            <option value="{{ salesman1[loop.index0] }}" {% if salesman1[loop.index0] in rps_employee_id %}selected{% endif %}>
+                                {{ sm }}
+                            </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <br>
+                        <div class="mt-2">
+                          <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /Account -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="content-footer footer bg-footer-theme">
+                <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                  <div class="mb-2 mb-md-0">
+                    ©
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    , Develop by Information Technology Department
+                    <a href="https://www.aepthailand.com/" target="_blank" class="footer-link fw-bolder">American-European Products Co.,Ltd</a>
+                  </div>
+                </div>
+              </footer>
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/sidebar/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar/pages-account-settings-account.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+            });
+
+            $('.js-data-basic-multiple').select2({
+            }).on('select2:open', function () {
+              $(this).next('.select2-container').css('width', '100%');
+            });      
+        });      
+    </script>
+    <script>
+      document.getElementById("saveBtn").addEventListener("click", function() {
+          let fileInput = document.getElementById("upload");
+          if (fileInput.files.length > 0) {
+              document.getElementById("uploadForm").submit();
+          } else {
+              alert("กรุณาเลือกไฟล์ก่อนกด Save!");
+          }
+      });
+  </script>
+    
+  </body>
+</html>

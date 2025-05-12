@@ -1,0 +1,47 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+th, td {
+    padding: 6px 15px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #dbdbdb;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.content table tbody tr:hover {
+    background-color: rgba(196, 210, 226, 0.5);
+}
+  
+th {
+    background-color: #A0BEE2;
+    color: #435E7A;
+    text-align: center;
+}
+
+td {
+    cursor: pointer;
+}
+
+td a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 18px;
+    color: #fff;
+    background-color: #004b96;
+    border-radius: 50%;
+    padding: 10px;
+    display: inline-block;
+}
+
+.content {
+    overflow-y: auto;
+}
+
+.hidden {
+    display: none;
+}
