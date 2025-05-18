@@ -1,7 +1,7 @@
 users = [
     {
         'username': 'admin',
-        'password': 'admin1',
+        'password': 'Admin@1',
         'user_group': 'admin_group',
         'user_name': 'Thanapurt',
         'user_level': 1,
@@ -10,7 +10,7 @@ users = [
     },
     {
         'username': 'user',
-        'password': 'user1',
+        'password': 'User@1',
         'user_group': 'user_group',
         'user_name': 'Elon Musk',
         'user_level': 3,
