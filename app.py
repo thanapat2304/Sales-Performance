@@ -22,7 +22,7 @@ from routes.top_sale import top_sale_bp
 from routes.export import export_bp
 
 app = Flask(__name__)
-app.secret_key = '86679f9154d781668b739b1fc8134674'
+app.secret_key = '0000000000000000'
 app.permanent_session_lifetime = timedelta(minutes=30)
 
 app.register_blueprint(tracking_bp)
@@ -32,49 +32,6 @@ app.register_blueprint(system_bp)
 app.register_blueprint(compare_bp)
 app.register_blueprint(top_sale_bp)
 app.register_blueprint(export_bp)
-
-#@app.before_request
-#def before_request_logging():
-#    g.start_time = datetime.now()
-
-#@app.after_request
-#def after_request_logging(response):
-#    if hasattr(g, 'start_time'):
-#        end_time = datetime.now()
-#        total_time = end_time - g.start_time#
-
-#        log_menu = request.endpoint
-#        log_time = datetime.now()
-#        user_name = session.get('user_name', None)
-#        user_ip = request.remote_addr
-#        log_timeout = total_time.total_seconds()
-
-#        if user_ip == '127.0.0.1':
-#            log_type = 'IP Private'
-#        elif user_ip.startswith('192.168.2'):
-#            log_type = 'Client'
-#        elif user_ip.startswith('192.168.11'):
-#            log_type = 'Client'
-#        elif user_ip.startswith('192.168.10'):
-#            log_type = 'Server'
-#        elif any(user_ip.startswith(prefix) for prefix in ['172.16.17', '172.16.18', '172.16.19', '172.16.20', '172.16.21', '172.16.22']):
-#            log_type = 'Client (Branch)'
-#        else:
-#            log_type = 'IP Public'
-
-#        if log_menu not in ['static', 'login_route']:
-#            try:
-#                connection = connect_aep_portal()
-#                with connection.cursor() as cursor:
-#                    cursor.execute("""
-#                       INSERT INTO rps_tb_log (log_menu_rps, log_user_rps, log_ip_rps, log_time_rps, log_timeout_rps, log_type_rps)
-#                        VALUES (%s, %s, %s, %s, %s, %s)
-#                    """, (log_menu, user_name, user_ip, log_time, log_timeout, log_type))
-#                    connection.commit()
-#            except Exception as e:
-#               print(f"Error logging activity: {e}")
-
-#    return response
 
 @app.errorhandler(404)
 def page_not_found(error):

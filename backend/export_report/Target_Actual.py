@@ -104,57 +104,7 @@ def data_sale(start_date, end_date):
         return None
 
     query = """
-        SELECT
-            DAY(INQ_SALEREPORT_RAWDATA_GTAP_NEW.DOCDATE) AS Day,
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.MNT, 
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.YR, 	
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.CUSTNO, 
-            ARCODE.CUSTNAME, 
-            CASE INQ_SALEREPORT_RAWDATA_GTAP_NEW.CUSTYPE
-                WHEN 'Airline (สายการบิน)' THEN 'Airline'
-                WHEN 'Bakery Shop (ร้านเบเกอรี่)' THEN 'Bakery Shop'
-                WHEN 'Company (บริษัท)' THEN 'Company'
-                WHEN 'Factory (โรงงาน)' THEN 'Factory'
-                WHEN 'Hotel (โรงแรม)' THEN 'Hotel'
-                WHEN 'Individual (บุคคล)' THEN 'Individual'
-                WHEN 'Other' THEN 'Other'
-                WHEN 'Restaurant - American' THEN 'Restaurant'
-                WHEN 'Restaurant - Chinese (ร้านอาหารจีน)' THEN 'Restaurant'
-                WHEN 'Restaurant - Europe' THEN 'Restaurant'
-                WHEN 'Restaurant - Frence (ร้านอาหารฝรั่งเศส)' THEN 'Restaurant'
-                WHEN 'Restaurant - German' THEN 'Restaurant'
-                WHEN 'Restaurant - Italian (ร้านอาหารอิตาเลี่ยน)' THEN 'Restaurant'
-                WHEN 'Restaurant - Japanese (ร้านอาหารญี่ปุ่น)' THEN 'Restaurant'
-                WHEN 'Restaurant - Korean' THEN 'Restaurant'
-                WHEN 'Restaurant - Mexican' THEN 'Restaurant'
-                WHEN 'Restaurant - Spain' THEN 'Restaurant'
-                WHEN 'Restaurant - Thai (ร้านอาหารไทย)' THEN 'Restaurant'
-                WHEN 'Restaurant - มุสลิม/อิสลาม' THEN 'Restaurant'
-                WHEN 'Restaurant - ร้านอาหารทั่วไป' THEN 'Restaurant'
-                WHEN 'Retail Event' THEN 'Retail Event'
-                WHEN 'School  (โรงเรียน)' THEN 'School'
-                WHEN 'Whole Sale Shop (ร้านขายส่ง)' THEN 'Whole Sale Shop'
-                WHEN 'ห้างสรรพสินค้า' THEN 'Supermarket'
-            END AS End_Customer_Type,
-            ARCODE.SMCODE AS SMCODE_MASTER, 
-            ARSALMAN.NAME AS SMNAME_MASTER, 
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.NETAMOUNT AS AMOUNT
-        FROM
-            dbo.INQ_SALEREPORT_RAWDATA_GTAP_NEW
-        LEFT JOIN
-            dbo.ARCODE
-        ON 
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.CUSTNO = ARCODE.CUSTNO
-        LEFT JOIN
-            dbo.ARSALMAN
-        ON 
-            ARCODE.COCODE = ARSALMAN.COCODE AND
-            ARCODE.SMCODE = ARSALMAN.SMCODE
-        WHERE
-            ARCODE.COCODE = 'AEPC' AND
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.DOCDATE BETWEEN %s AND %s AND
-            INQ_SALEREPORT_RAWDATA_GTAP_NEW.MATNO <> 'CANCEL' 
-        ORDER BY DOCDATE DESC	
+        SELECT * FROM customers WHERE customer_id = 12345;
     """
 
     try:
@@ -171,24 +121,7 @@ def data_target():
         return None
 
     query = """
-    SELECT 
-        RPS_Target_YR,
-        RPS_Target_id,
-        RPS_Target_Name,
-        RPS_Jan,
-        RPS_Feb,
-        RPS_Mar,
-        RPS_Apr,
-        RPS_May,
-        RPS_Jun,
-        RPS_Jul,
-        RPS_Aug,
-        RPS_Sep,
-        RPS_Oct,
-        RPS_Nov,
-        RPS_Dec
-    FROM rps_tb_target
-    WHERE RPS_Target_YR = YEAR(CURRENT_DATE)
+    SELECT * FROM customers WHERE customer_id = 12345;
     """
 
     try:
@@ -205,12 +138,7 @@ def data_status():
         return None
 
     query = """
-    SELECT 
-        SMCODE_status,
-        SMNAME_status,
-        REMARK_status, 
-        NICKNAME_status
-    FROM tb_status_sales
+    SELECT * FROM customers WHERE customer_id = 12345;
     """
 
     try:
@@ -228,23 +156,7 @@ def data_sample(end_date):
         return None
 
     query = """
-    SELECT
-        DAY(INQ_SO_PAYGIFT_FULL.DOCDATE) AS DAY,
-        INQ_SO_PAYGIFT_FULL.YR, 
-        INQ_SO_PAYGIFT_FULL.MNT,
-        INQ_SO_PAYGIFT_FULL.CUSTNO, 
-        INQ_SO_PAYGIFT_FULL.CUSTNAME, 
-        INQ_SO_PAYGIFT_FULL.SMCODE, 
-        INQ_SO_PAYGIFT_FULL.SMNAME,
-        INQ_SO_PAYGIFT_FULL.MATNO, 
-        INQ_SO_PAYGIFT_FULL.MATDESC, 
-        INQ_SO_PAYGIFT_FULL.UNIT, 
-        INQ_SO_PAYGIFT_FULL.UOM_DESC
-    FROM
-        dbo.INQ_SO_PAYGIFT_FULL
-    WHERE 
-        INQ_SO_PAYGIFT_FULL.COCODE = 'AEPC' AND
-    INQ_SO_PAYGIFT_FULL.DOCDATE BETWEEN %s AND %s
+    SELECT * FROM customers WHERE customer_id = 12345;
     """
 
     try:

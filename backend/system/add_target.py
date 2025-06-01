@@ -100,7 +100,7 @@ def get_target_by_salesman(salesman_id, selected_year, selected_typesale):
     conn = connect_aep_portal()
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM rps_tb_target WHERE RPS_Target_id = %s AND RPS_Target_YR = %s AND RPS_Sales_Type = %s", (salesman_id, selected_year, selected_typesale,))
+        cursor.execute("SELECT * FROM customers WHERE customer_id = 1234 AND RPS_Target_YR = %s AND RPS_Sales_Type = %s", (salesman_id, selected_year, selected_typesale,))
         exists = cursor.fetchone()[0] > 0
         cursor.close()
     finally:
@@ -111,7 +111,7 @@ def update_target(salesman_id, selected_typesale, selected_year, data_January, d
     conn = connect_aep_portal()
     cursor = conn.cursor()
     cursor.execute("""
-        UPDATE rps_tb_target 
+        UPDATE Demo_data 
         SET RPS_Jan = %s, RPS_Feb = %s, RPS_Mar = %s, RPS_Apr = %s, RPS_May = %s, RPS_Jun = %s, RPS_Jul = %s, RPS_Aug = %s, RPS_Sep = %s, RPS_Oct = %s, RPS_Nov = %s, RPS_Dec = %s, RPS_Target = %s
         WHERE RPS_Target_id = %s AND RPS_Target_YR = %s AND RPS_Sales_Type = %s
     """, (data_January, data_February, data_March, data_April, data_May, data_June, data_July, data_August, data_September, data_October, data_November, data_December, total_target, salesman_id, selected_year, selected_typesale))
@@ -123,7 +123,7 @@ def insert_target(salesman_id, selected_typesale, selected_year, salesman_name, 
     conn = connect_aep_portal()
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO rps_tb_target (RPS_Target_id, RPS_Sales_Type, RPS_Target_YR, RPS_Target_Name, RPS_Jan, RPS_Feb, RPS_Mar, RPS_Apr, RPS_May, RPS_Jun, RPS_Jul, RPS_Aug, RPS_Sep, RPS_Oct, RPS_Nov, RPS_Dec, RPS_Target)
+        INSERT INTO Demo_data (RPS_Target_id, RPS_Sales_Type, RPS_Target_YR, RPS_Target_Name, RPS_Jan, RPS_Feb, RPS_Mar, RPS_Apr, RPS_May, RPS_Jun, RPS_Jul, RPS_Aug, RPS_Sep, RPS_Oct, RPS_Nov, RPS_Dec, RPS_Target)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (salesman_id, selected_typesale, selected_year, salesman_name, data_January, data_February, data_March, data_April, data_May, data_June, data_July, data_August, data_September, data_October, data_November, data_December, total_target))
     conn.commit()
@@ -147,12 +147,7 @@ def get_lates_target(sales):
     year = request.args.get('year')
 
     query = """
-    SELECT RPS_Jan, RPS_Feb, RPS_Mar, RPS_Apr, RPS_May, RPS_Jun, RPS_Jul, RPS_Aug, RPS_Sep, RPS_Oct, RPS_Nov, RPS_Dec
-    FROM rps_tb_target 
-    WHERE RPS_Target_id = %s 
-    AND RPS_Target_YR = %s
-    AND RPS_Sales_Type = %s
-    LIMIT 1
+    SELECT * FROM customers WHERE customer_id = 12345;
     """
     result = execute_query_portal(query, (salesman_id, year, typesale,))
     

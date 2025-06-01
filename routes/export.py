@@ -71,7 +71,7 @@ def update_status(id):
         conn = connect_aep_portal()
         cursor = conn.cursor()
 
-        cursor.execute('''UPDATE tb_status_sales SET REMARK_status = %s WHERE SMCODE_status = %s''', (new_status, id))
+        cursor.execute('''UPDATE damo_tb SET REMARK_status = %s WHERE SMCODE_status = %s''', (new_status, id))
         
         conn.commit()
 

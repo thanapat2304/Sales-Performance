@@ -71,7 +71,7 @@ def all_customers(user_ids):
     cursor = conn.cursor()
 
     placeholders = ','.join(['%s'] * len(user_ids))
-    query = f"""SELECT dbo.ARCODE.CUSTNO FROM dbo.ARCODE WHERE dbo.ARCODE.COCODE = 'aepc' AND SMCODE IN ({placeholders})"""
+    query = f"""SELECT * FROM customers WHERE customer_id = 12345;"""
 
     cursor.execute(query, user_ids)
     allcustomers = [row[0] for row in cursor.fetchall()]
@@ -82,10 +82,10 @@ def get_product():
     conn = connect_aep_DB()
     cursor = conn.cursor()
     
-    cursor.execute("""SELECT dbo.IMMATMAS.MATNO FROM dbo.IMMATMAS WHERE dbo.IMMATMAS.COCODE = 'aepc'""")
+    cursor.execute("""SELECT * FROM customers WHERE customer_id = 12345;""")
     product1 = [row[0] for row in cursor.fetchall()]
     
-    cursor.execute("""SELECT CONCAT(IMMATMAS.MATNO,' | ',IMMATMAS.MATDESC) AS CUSTOMER FROM dbo.IMMATMAS WHERE dbo.IMMATMAS.COCODE = 'aepc'""")
+    cursor.execute("""SELECT * FROM customers WHERE customer_id = 12345;""")
     product2 = [row[0] for row in cursor.fetchall()]
     
     product1.insert(0, "ALL")
